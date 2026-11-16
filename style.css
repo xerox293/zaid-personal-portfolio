@@ -1,0 +1,767 @@
+/* =====================================================
+   Zaid Raza - Personal Resume Website
+   External stylesheet: style.css
+
+   Contents
+   1.  Colours and fonts (CSS variables)
+   2.  Base styles (element selectors)
+   3.  Layout helpers (container, sections, two-col, divider)
+   4.  Header and navigation
+   5.  Typography (labels, headings, text)
+   6.  Introduction (hero, garment label, three columns)
+   7.  Experience and education entries
+   8.  Achievement
+   9.  Interests
+   10. Skills and languages
+   11. Contact
+   12. Footer
+   13. Responsive design (media queries)
+
+   Design idea: the palette comes from indigo-dyed denim.
+   The ruler marks in the header echo a tailor's tape, and the
+   dashed marigold lines echo topstitching on a garment.
+   ===================================================== */
+
+
+/* 1. COLOURS AND FONTS
+   Variables are declared once on :root and reused below,
+   so the whole palette can be changed in one place. */
+:root {
+  --chalk: #f2f5fa;       /* page background, like tailor's chalk */
+  --white: #ffffff;
+  --wash: #e5ecf7;        /* washed denim: light blue sections and chips */
+  --indigo: #17224d;      /* deep indigo: headings, dark sections */
+  --denim: #2d4a8c;       /* denim blue: links and labels */
+  --topstitch: #e2a62b;   /* marigold, like contrast stitching (decoration only) */
+  --text: #2b3659;        /* body text */
+  --muted: #566283;       /* secondary text */
+  --line: #d3dcec;        /* thin solid lines */
+  --stitch: #b3c1dc;      /* dashed lines */
+  --tick: rgba(23, 34, 77, 0.3);   /* ruler marks */
+
+  --serif: "Young Serif", Georgia, "Times New Roman", serif;
+  --sans: "Hanken Grotesk", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+
+/* 2. BASE STYLES (element selectors) */
+* {
+  box-sizing: border-box;   /* padding and border stay inside the set width */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px; /* keeps headings clear of the sticky header */
+}
+
+body {
+  margin: 0;
+  background-color: var(--chalk);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--denim);
+}
+
+/* Pseudo-selector: :hover changes a link while the mouse is over it */
+a:hover {
+  color: var(--indigo);
+}
+
+/* Visible outline for keyboard users */
+a:focus-visible {
+  outline: 2px solid var(--denim);
+  outline-offset: 3px;
+}
+
+
+/* 3. LAYOUT HELPERS */
+
+/* Class selector: centres content and limits its width */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;           /* auto left and right margins = centred */
+  padding: 0 32px;
+}
+
+.section {
+  padding: 88px 0;
+}
+
+/* Background variations. Same specificity as .section but later in the file, so they win. */
+.section-white {
+  background-color: var(--white);
+}
+
+.section-wash {
+  background-color: var(--wash);
+}
+
+.section-first {
+  padding-top: 96px;
+}
+
+/* CSS Grid: two columns, narrower on the left */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  column-gap: 64px;
+  row-gap: 16px;
+  align-items: start;
+}
+
+/* Dashed line, like a row of stitching */
+.divider {
+  border: none;
+  border-top: 2px dashed var(--stitch);
+  margin: 72px 0;
+}
+
+
+/* 4. HEADER AND NAVIGATION */
+
+/* ID selector: styles the one element with id="site-header".
+   Positioning: sticky keeps the header at the top while scrolling. */
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Ruler marks along the bottom edge, like a tailor's tape.
+   Two repeating gradients: a short mark every 8px and a tall mark every 40px.
+   Positioning: absolute places them inside the sticky header. */
+#site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background-image:
+    repeating-linear-gradient(90deg, var(--tick) 0, var(--tick) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(90deg, var(--tick) 0, var(--tick) 1px, transparent 1px, transparent 8px);
+  background-size: 100% 12px, 100% 6px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+}
+
+/* Flexbox: wordmark on the left, navigation on the right */
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 18px;
+  padding-bottom: 28px;
+}
+
+.wordmark {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--indigo);
+  text-decoration: none;
+}
+
+.nav-list {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+/* Combined selector: only links inside .nav-list */
+.nav-list a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav-list a:hover {
+  color: var(--indigo);
+  text-decoration: underline;
+  text-decoration-color: var(--topstitch);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+
+/* Skip link: positioned off-screen until it receives keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 16px;
+  padding: 8px 14px;
+  background-color: var(--indigo);
+  color: #ffffff;
+  border-radius: 4px;
+  z-index: 20;
+}
+
+.skip-link:focus {
+  top: 12px;
+  color: #ffffff;
+}
+
+
+/* 5. TYPOGRAPHY */
+
+/* Section label: a short dashed "stitch" followed by the section name */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--denim);
+}
+
+.label::before {
+  content: "";
+  width: 28px;
+  border-top: 2px dashed var(--topstitch);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--serif);
+  font-weight: 400;       /* Young Serif has a single weight */
+  color: var(--indigo);
+  margin: 0 0 16px 0;
+}
+
+h1 {
+  font-size: 4.6rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.prose p {
+  max-width: 62ch;          /* keeps lines a comfortable length to read */
+}
+
+
+/* 6. INTRODUCTION */
+
+/* Grid: main text on the left, garment label on the right */
+.hero {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  column-gap: 80px;
+  align-items: center;
+}
+
+.lede {
+  max-width: 24ch;
+  margin-bottom: 24px;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  line-height: 1.3;
+  color: var(--indigo);
+}
+
+.hero-text {
+  max-width: 56ch;
+  margin-bottom: 0;
+}
+
+/* The garment label: a white label with a dashed stitch sewn just inside the edge.
+   outline-offset with a negative value draws the outline inside the box. */
+.care-label {
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 36px 40px;
+  outline: 2px dashed var(--topstitch);
+  outline-offset: -10px;
+}
+
+.facts {
+  margin: 0;
+}
+
+.facts div {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+/* Pseudo-class: no line above the first row */
+.facts div:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.facts div:last-child {
+  padding-bottom: 0;
+}
+
+.facts dt {
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--denim);
+}
+
+.facts dd {
+  margin: 0;
+  color: var(--indigo);
+  line-height: 1.5;
+}
+
+/* Three short columns, separated by dashed vertical lines */
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 72px;
+}
+
+.trio-item {
+  padding: 0 32px;
+}
+
+.trio-item:first-child {
+  padding-left: 0;
+}
+
+.trio-item:last-child {
+  padding-right: 0;
+}
+
+/* Adjacent sibling selector: every item that follows another item */
+.trio-item + .trio-item {
+  border-left: 2px dashed var(--stitch);
+}
+
+.trio-item p {
+  margin-bottom: 0;
+  font-size: 0.97rem;
+  color: var(--muted);
+}
+
+
+/* 7. EXPERIENCE AND EDUCATION ENTRIES
+   Date and category on the left, details on the right. */
+
+#experience h2,
+#education h2 {
+  margin-bottom: 40px;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 1fr 2.6fr;
+  column-gap: 64px;
+  padding: 36px 0;
+  border-top: 1px solid var(--line);
+}
+
+.entry-date {
+  margin: 0 0 8px 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--indigo);
+}
+
+/* Small hang-tag style category label */
+.tag-label {
+  display: inline-block;
+  margin: 0;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background-color: var(--wash);
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--denim);
+}
+
+.entry-body h3 {
+  margin-bottom: 4px;
+}
+
+.entry-org {
+  margin-bottom: 14px;
+  color: var(--muted);
+}
+
+.entry-body ul {
+  padding-left: 20px;
+}
+
+.entry-body li {
+  margin-bottom: 8px;
+}
+
+/* Marigold bullet markers */
+.entry-body li::marker {
+  color: var(--topstitch);
+}
+
+/* Education is a true sequence, so it gets a vertical dashed thread with a dot per stage. */
+.timeline {
+  list-style: none;
+}
+
+.timeline .entry {
+  padding: 0;
+  border-top: none;
+}
+
+.timeline .entry-body {
+  position: relative;     /* the dot below is positioned relative to this box */
+  padding: 0 0 40px 32px;
+  border-left: 2px dashed var(--stitch);
+}
+
+.timeline .entry-body::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: -8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--chalk);
+  border: 3px solid var(--topstitch);
+}
+
+.timeline li:last-child .entry-body {
+  padding-bottom: 0;
+}
+
+.timeline .entry-date {
+  margin-top: 0;
+}
+
+
+/* 8. ACHIEVEMENT
+   A deep indigo band with two rows of topstitching, like a denim seam. */
+
+.section-dark {
+  position: relative;
+  background-color: var(--indigo);
+  color: #c9d4ee;
+}
+
+.section-dark::before,
+.section-dark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 2px dashed var(--topstitch);
+  opacity: 0.8;
+}
+
+.section-dark::before {
+  top: 18px;
+}
+
+.section-dark::after {
+  bottom: 18px;
+}
+
+.section-dark .label {
+  color: #ffffff;
+}
+
+.achievement-number {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 4.6rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.achievement-text {
+  margin: 12px 0 0 0;
+  max-width: 38ch;
+  font-size: 1.1rem;
+}
+
+
+/* 9. INTERESTS */
+
+.interest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.interest {
+  position: relative;       /* lets the small icon sit in the top-right corner */
+  background-color: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 32px;
+}
+
+.interest h3 {
+  font-size: 1.25rem;
+}
+
+.interest p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+
+/* Small line icons (spool of thread, skateboard) */
+.interest-icon {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+}
+
+/* Adjacent sibling selector: keeps the title clear of the icon */
+.interest-icon + h3 {
+  padding-right: 64px;
+}
+
+
+/* 10. SKILLS AND LANGUAGES */
+
+#skills h2 {
+  margin-bottom: 32px;
+}
+
+.skill-row {
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  align-items: center;
+}
+
+.skill-row h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+/* Flexbox with wrapping: tags flow onto new lines as needed */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background-color: var(--wash);
+  font-size: 0.93rem;
+  font-weight: 500;
+  color: var(--indigo);
+}
+
+.tag-list li:hover {
+  background-color: var(--indigo);
+  color: #ffffff;
+}
+
+
+/* 11. CONTACT */
+
+.contact-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.contact-table th,
+.contact-table td {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: baseline;
+  font-size: 1.15rem;
+}
+
+.contact-table th {
+  width: 130px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--denim);
+}
+
+.contact-table tr:last-child th,
+.contact-table tr:last-child td {
+  border-bottom: 1px solid var(--line);
+}
+
+
+/* 12. FOOTER */
+
+#site-footer {
+  background-color: var(--indigo);
+  padding: 32px 0;
+  font-size: 0.9rem;
+  color: #aab8da;
+}
+
+#site-footer a {
+  color: #dbe5f8;
+}
+
+#site-footer a:hover {
+  color: #ffffff;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-inner p {
+  margin: 0;
+}
+
+
+/* 13. RESPONSIVE DESIGN (media queries)
+   Styles inside a media query only apply when the
+   screen is narrower than the stated width. */
+
+/* Tablet */
+@media (max-width: 900px) {
+  h1 {
+    font-size: 3.8rem;
+  }
+
+  .two-col,
+  .entry {
+    column-gap: 40px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;   /* garment label moves below the text */
+    row-gap: 40px;
+  }
+
+  .trio-item {
+    padding: 0 20px;
+  }
+
+  .achievement-number {
+    font-size: 3.8rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .section {
+    padding: 64px 0;
+  }
+
+  .section-first {
+    padding-top: 56px;
+  }
+
+  /* Every two-column layout becomes a single column */
+  .two-col,
+  .entry,
+  .interest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .entry {
+    row-gap: 12px;
+  }
+
+  /* Header: wordmark above the navigation */
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 6px 18px;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .lede {
+    font-size: 1.45rem;
+  }
+
+  .care-label {
+    padding: 28px 28px;
+  }
+
+  /* The three columns stack, with dashed lines above instead of beside */
+  .trio {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+    margin-top: 48px;
+  }
+
+  .trio-item,
+  .trio-item:first-child,
+  .trio-item:last-child {
+    padding: 0;
+  }
+
+  .trio-item + .trio-item {
+    border-left: none;
+    border-top: 2px dashed var(--stitch);
+    padding-top: 24px;
+  }
+
+  .timeline .entry-body {
+    padding-left: 24px;
+  }
+
+  .achievement-number {
+    font-size: 3rem;
+  }
+
+  .divider {
+    margin: 48px 0;
+  }
+
+  .contact-table th {
+    width: 100px;
+  }
+}
